@@ -6,8 +6,8 @@
   <Version>1.0.0.0</Version>
   <ProviderName>SafeDocs MVP</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="SafeDocs MVP - Control de Envío"/>
-  <Description DefaultValue="Confirmación antes de enviar correos electrónicos"/>
+  <DisplayName DefaultValue="SafeDocs MVP"/>
+  <Description DefaultValue="Control de envío de correos"/>
   <IconUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-64.png"/>
   <SupportUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/"/>
@@ -36,30 +36,4 @@
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
   </Rule>
-  
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
-    <Requirements>
-      <Sets DefaultMinVersion="1.10">
-        <Set Name="Mailbox"/>
-      </Sets>
-    </Requirements>
-    
-    <Hosts>
-      <Host xsi:type="MailHost">
-        <LaunchEvents>
-          <LaunchEvent Type="OnMessageSend" FunctionName="onMessageSendHandler"/>
-        </LaunchEvents>
-        
-        <DesktopFormFactor>
-          <FunctionFile resid="Commands.Url"/>
-        </DesktopFormFactor>
-        
-        <Resources>
-          <bt:Urls>
-            <bt:Url id="Commands.Url" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/commands.js"/>
-          </bt:Urls>
-        </Resources>
-      </Host>
-    </Hosts>
-  </VersionOverrides>
 </OfficeApp>
