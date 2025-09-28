@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
+           xsi:type="MailApp">
+
+  <Id>12345678-1234-1234-1234-123456789012</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>SafeDocs MVP</ProviderName>
+  <DefaultLocale>es-ES</DefaultLocale>
+  
+  <DisplayName DefaultValue="SafeDocs MVP - Control de Envío"/>
+  <Description DefaultValue="Confirmación antes de enviar correos electrónicos"/>
+  <IconUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-64.png"/>
+  <SupportUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/"/>
+  
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.10"/>
+    </Sets>
+  </Requirements>
+  
+  <Permissions>ReadWriteItem</Permissions>
+  
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
+  </Rule>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.10">
+        <bt:Set Name="Mailbox"/>
+      </bt:Sets>
+    </Requirements>
+    
+    <Hosts>
+      <Host xsi:type="MailHost">
+        
+        <LaunchEvents>
+          <LaunchEvent Type="OnMessageSend" FunctionName="onMessageSendHandler"/>
+        </LaunchEvents>
+        
+        <FormFactors>
+          <FormFactor xsi:type="DesktopFormFactor">
+            
+            <FunctionFile resid="Commands.Url"/>
+            
+            <ExtensionPoint xsi:type="MessageReadCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="SafeDocsGroup">
+                  <Label resid="GroupLabel"/>
+                  <Control xsi:type="Button" id="SafeDocsButton">
+                    <Label resid="ButtonLabel"/>
+                    <Supertip>
+                      <Title resid="ButtonTitle"/>
+                      <Description resid="ButtonDescription"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="Icon.16x16"/>
+                      <bt:Image size="32" resid="Icon.32x32"/>
+                      <bt:Image size="80" resid="Icon.80x80"/>
+                    </Icon>
+                    <Action xsi:type="ShowTaskpane">
+                      <TaskpaneId>SafeDocsPane</TaskpaneId>
+                      <SourceLocation resid="Taskpane.Url"/>
+                    </Action>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+            
+          </FormFactor>
+        </FormFactors>
+        
+        <Resources>
+          <bt:Images>
+            <bt:Image id="Icon.16x16" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-16.png"/>
+            <bt:Image id="Icon.32x32" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-32.png"/>
+            <bt:Image id="Icon.80x80" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-80.png"/>
+          </bt:Images>
+          <bt:Urls>
+            <bt:Url id="Commands.Url" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/commands.js"/>
+            <bt:Url id="Dialog.Url" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/dialog.html"/>
+            <bt:Url id="Taskpane.Url" DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/taskpane.html"/>
+          </bt:Urls>
+          <bt:ShortStrings>
+            <bt:String id="GroupLabel" DefaultValue="SafeDocs"/>
+            <bt:String id="ButtonLabel" DefaultValue="Estado"/>
+            <bt:String id="ButtonTitle" DefaultValue="SafeDocs MVP"/>
+          </bt:ShortStrings>
+          <bt:LongStrings>
+            <bt:String id="ButtonDescription" DefaultValue="Ver estado del sistema SafeDocs"/>
+          </bt:LongStrings>
+        </Resources>
+        
+      </Host>
+    </Hosts>
+  </VersionOverrides>
+</OfficeApp>

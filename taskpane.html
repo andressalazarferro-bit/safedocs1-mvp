@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeDocs MVP - Panel de Estado</title>
+    
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 16px;
+            background-color: #faf9f8;
+            color: #323130;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #edebe9;
+        }
+        
+        .logo {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #0078d4;
+        }
+        
+        .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            margin: 0;
+        }
+        
+        .version {
+            font-size: 12px;
+            color: #605e5c;
+            margin-top: 4px;
+        }
+        
+        .status-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #ffffff;
+            border: 1px solid #edebe9;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .status-label {
+            color: #605e5c;
+        }
+        
+        .status-value {
+            font-weight: 600;
+            color: #323130;
+        }
+        
+        .status-active {
+            color: #107c10;
+        }
+        
+        .info-box {
+            background-color: #f3f9ff;
+            border: 1px solid #b3d6fc;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #004578;
+            margin-bottom: 4px;
+        }
+        
+        .info-text {
+            color: #004578;
+            font-size: 13px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid #0078d4;
+            background-color: #0078d4;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background-color 0.15s ease;
+        }
+        
+        .btn:hover {
+            background-color: #106ebe;
+            border-color: #106ebe;
+        }
+        
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 11px;
+            color: #8a8886;
+            padding-top: 16px;
+            border-top: 1px solid #edebe9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🛡️</div>
+        <div class="title">SafeDocs MVP</div>
+        <div class="version">Control de Envío v1.0.0</div>
+    </div>
+    
+    <div class="info-box">
+        <div class="info-title">Sistema Activo</div>
+        <div class="info-text">
+            SafeDocs está interceptando todos los envíos de correo y solicitando confirmación antes de enviar.
+        </div>
+    </div>
+    
+    <div class="status-section">
+        <div class="section-title">
+            📊 Estado del Sistema
+        </div>
+        
+        <div class="status-item">
+            <span class="status-label">Interceptación</span>
+            <span class="status-value status-active" id="interceptStatus">Activa</span>
+        </div>
+        
+        <div class="status-item">
+            <span class="status-label">Última verificación</span>
+            <span class="status-value" id="lastCheck">Cargando...</span>
+        </div>
+        
+        <div class="status-item">
+            <span class="status-label">Plataforma</span>
+            <span class="status-value" id="platform">Detectando...</span>
+        </div>
+    </div>
+    
+    <button class="btn" onclick="testSystem()">
+        Verificar Sistema
+    </button>
+    
+    <div class="footer">
+        SafeDocs MVP © 2024<br>
+        Control de envío de correos electrónicos
+    </div>
+
+    <script>
+        Office.onReady(function(info) {
+            console.log('SafeDocs MVP Taskpane: Panel cargado');
+            
+            document.getElementById('lastCheck').textContent = formatTime(new Date());
+            
+            if (info) {
+                document.getElementById('platform').textContent = 
+                    `${info.host} (${info.platform})`;
+            }
+        });
+        
+        function formatTime(date) {
+            return date.toLocaleTimeString('es-ES', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+        
+        function testSystem() {
+            const results = [];
+            
+            if (typeof Office !== 'undefined' && Office.context) {
+                results.push('✓ Office.js cargado correctamente');
+            } else {
+                results.push('✗ Error: Office.js no disponible');
+            }
+            
+            if (Office.context.mailbox) {
+                results.push('✓ Contexto de Outlook detectado');
+            } else {
+                results.push('✗ Error: No se detectó contexto de Outlook');
+            }
+            
+            alert('Diagnóstico del Sistema:\n\n' + results.join('\n'));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeDocs MVP - Confirmación de Envío</title>
+    
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #323130;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .dialog-container {
+            max-width: 350px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 200px;
+        }
+        
+        .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #0078d4;
+        }
+        
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #323130;
+        }
+        
+        .message {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            color: #605e5c;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 24px;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid;
+            cursor: pointer;
+            min-width: 80px;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background-color: #0078d4;
+            color: white;
+            border-color: #0078d4;
+        }
+        
+        .btn-primary:hover {
+            background-color: #106ebe;
+            border-color: #106ebe;
+        }
+        
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #323130;
+            border-color: #8a8886;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f3f2f1;
+            border-color: #323130;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #605e5c;
+        }
+        
+        .dialog-container {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dialog-container">
+        <div class="icon">📧</div>
+        
+        <div class="title">Confirmación de Envío</div>
+        
+        <div class="message">
+            ¿Está seguro que desea enviar este correo electrónico?<br>
+            <strong>SafeDocs MVP</strong> interceptó el envío para su confirmación.
+        </div>
+        
+        <div class="button-container">
+            <button class="btn btn-primary" id="sendButton" onclick="confirmSend()">
+                ✓ Enviar
+            </button>
+            <button class="btn btn-secondary" id="cancelButton" onclick="cancelSend()">
+                ✗ Cancelar
+            </button>
+        </div>
+        
+        <div class="loading" id="loadingIndicator">
+            Procesando...
+        </div>
+    </div>
+
+    <script>
+        let isProcessing = false;
+        
+        Office.onReady(function() {
+            console.log('SafeDocs MVP Dialog: Diálogo cargado correctamente');
+            
+            document.getElementById('cancelButton').focus();
+            
+            document.addEventListener('keydown', handleKeyboard);
+        });
+        
+        function handleKeyboard(event) {
+            if (isProcessing) return;
+            
+            switch(event.key) {
+                case 'Enter':
+                    confirmSend();
+                    event.preventDefault();
+                    break;
+                case 'Escape':
+                    cancelSend();
+                    event.preventDefault();
+                    break;
+            }
+        }
+        
+        function confirmSend() {
+            if (isProcessing) return;
+            
+            console.log('SafeDocs MVP Dialog: Usuario confirma envío');
+            
+            try {
+                setProcessingState(true);
+                
+                const response = JSON.stringify({
+                    action: 'send',
+                    timestamp: new Date().toISOString()
+                });
+                
+                Office.context.ui.messageParent(response);
+                
+            } catch (error) {
+                console.error('SafeDocs MVP Dialog: Error al confirmar envío:', error);
+                setProcessingState(false);
+            }
+        }
+        
+        function cancelSend() {
+            if (isProcessing) return;
+            
+            console.log('SafeDocs MVP Dialog: Usuario cancela envío');
+            
+            try {
+                setProcessingState(true);
+                
+                const response = JSON.stringify({
+                    action: 'cancel',
+                    timestamp: new Date().toISOString()
+                });
+                
+                Office.context.ui.messageParent(response);
+                
+            } catch (error) {
+                console.error('SafeDocs MVP Dialog: Error al cancelar envío:', error);
+                
+                setTimeout(() => {
+                    Office.context.ui.messageParent(JSON.stringify({ action: 'cancel' }));
+                }, 1000);
+            }
+        }
+        
+        function setProcessingState(processing) {
+            isProcessing = processing;
+            
+            const sendBtn = document.getElementById('sendButton');
+            const cancelBtn = document.getElementById('cancelButton');
+            const loading = document.getElementById('loadingIndicator');
+            
+            if (processing) {
+                sendBtn.disabled = true;
+                cancelBtn.disabled = true;
+                loading.style.display = 'block';
+            } else {
+                sendBtn.disabled = false;
+                cancelBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
