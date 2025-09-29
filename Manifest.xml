@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
            xsi:type="MailApp">
   <Id>12345678-1234-1234-1234-123456789012</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>SafeDocs MVP</ProviderName>
-  <DefaultLocale>es-ES</DefaultLocale>
+  <ProviderName>SafeDocs</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="SafeDocs MVP"/>
-  <Description DefaultValue="Control de envío"/>
-  <IconUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/icon-64.png"/>
+  <Description DefaultValue="Email control system"/>
+  <SupportUrl DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/"/>
   
   <Hosts>
     <Host Name="Mailbox"/>
@@ -17,18 +16,9 @@
   
   <Requirements>
     <Sets>
-      <Set Name="Mailbox" MinVersion="1.3"/>
+      <Set Name="Mailbox" MinVersion="1.1"/>
     </Sets>
   </Requirements>
-  
-  <FormSettings>
-    <Form xsi:type="ItemRead">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://andressalazarferro-bit.github.io/safedocs1-mvp/taskpane.html"/>
-        <RequestedHeight>250</RequestedHeight>
-      </DesktopSettings>
-    </Form>
-  </FormSettings>
   
   <Permissions>ReadItem</Permissions>
   
